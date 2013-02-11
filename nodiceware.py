@@ -16100,7 +16100,7 @@ class NoDiceware:
     self.passphrase[int(roll[0])-1] = new_word
     
   def generate_rolls(self, num):
-    """Generate dice rolls with rundom number generator
+    """Generate dice rolls with random number generator
     
     :param num: number of tuplets to generate"""
     for i in range(num):
