@@ -16044,11 +16044,17 @@ class NoDiceware:
     
     
   def get_word(self, roll):
-    """Lookup dice roll from wordlist"""
+    """Lookup dice roll from wordlist
+    
+    :param roll: string of dice rolls
+    """
     self.passphrase.append(self.wordlist[int(roll)]);
     
-  def add_special_character(self,roll):
-    """Add special character into passphrase"""
+  def add_special_character(self, roll):
+    """Add special character into passphrase
+    
+    :param roll: string of dice rolls, empty when rolls are generated
+    """
     
     # Determine where to add special character, 0 means at the beginning, 
     #* means new roll
