@@ -22,7 +22,7 @@
 from opterator import opterate
 from Crypto.Random import random
 from sys import stderr, exit
-
+import re 
 class NoDiceware:
   """Class to create Diceware passphrases easily"""
   wordlist_normal = {
@@ -15997,7 +15997,7 @@ class NoDiceware:
     "??",
     "@"]
 
-  def __init__(self, roll, special, generate, num_words):
+  def __init__(self, roll, special, generate, num_words, filename):
     self.passphrase = []
     self.generate = generate
     self.rawroll = roll
@@ -16014,6 +16014,9 @@ class NoDiceware:
         print("You specified you dice roll, I'll use it instead of generating")
         self.generate = False
       self.wordlist = self.wordlist_normal
+      
+    if(len(filename) > 0):
+      self.load_wordlist(filename)
       
     self.make_passphrase()
     
@@ -16064,7 +16067,7 @@ class NoDiceware:
     
     
   def get_word(self, roll):
-    """Lookup dice roll from wordlist
+    """Lookup dice roll from word list
     
     :param roll: string of dice rolls
     """
@@ -16132,10 +16135,42 @@ class NoDiceware:
     for i in range(num):
       r = str(random.randint(0, (2**13) - 1)).rjust(5, '0')
       self.rawroll = self.rawroll + r
+      
+  def load_wordlist(self, filename):
+    """Load word list from filename
     
+    :param filename: name of file with word list"""
+    reg1 = re.compile("^([1-6]{5})[ \t]+(.*)$")
+    f = open(filename, 'r')
+    
+    if(self.generate):
+      wordlist = []
+      reg2 = re.compile("^(\S*)$")
+      for line in f:
+        m1 = reg1.match(line)
+        m2 = reg2.match(line)
+        
+        if(m1):
+          wordlist.append(m1.group(2))
+        elif(m2):
+          wordlist.append(m2.group(1))
+          
+    else:
+      wordlist = {}
+      for line in f:
+        m = reg1.match(line)
+        if(m):
+          wordlist[int(m.group(1))] = m.group(2)
+    
+    if((not self.generate and len(wordlist) < 7776) or 
+    (self.generate and len(wordlist) < 2**13)):
+      stderr.write("Word list is too short\n")
+      exit(5)
+      
+    self.wordlist = wordlist
     
 @opterate
-def main(roll="", special=False, generate=False, num_words="0"):
+def main(roll="", special=False, generate=False, num_words="0", filename=""):
   """Create Diceware passphrases easily, for more info visit 
   http://world.std.com/~reinhold/diceware.html
   
@@ -16144,8 +16179,9 @@ def main(roll="", special=False, generate=False, num_words="0"):
   :param generate: generate random dice roll
   WARNING: generated passphrases are less secure than from dice rolls
   :param num_words: -n --num numbers of words to generate
+  :param filename: -w --word list load word list from file
   """
-  NoDiceware(roll, special, generate, num_words)
+  NoDiceware(roll, special, generate, num_words, filename)
   
 if __name__ == '__main__':
   main()
