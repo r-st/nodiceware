@@ -16047,6 +16047,10 @@ class NoDiceware:
       stderr.write("You must specify your dice rolls\n")
       exit(1)
     
+    if(not rolls.isnumeric() or (not self.generate and ('0' in rolls or '7' in rolls or '8' in rolls or '9' in rolls))):
+      stderr.write("Dice roll can be only numbers on dice\n")
+      exit(3)
+    
     if(len(rolls) % 5 != 0):
       stderr.write("Number of dice rolls must be multiple of 5")
       if(self.special):
@@ -16054,10 +16058,6 @@ class NoDiceware:
       stderr.write("\n")
       exit(2)
       
-    if(not rolls.isnumeric() or (not self.generate and ('0' in rolls or '7' in rolls or '8' in rolls or '9' in rolls))):
-      stderr.write("Dice roll can be only numbers on dice\n")
-      exit(3)
-    
     while(rolls):
       roll = rolls[:5]
       rolls = rolls[5:]
