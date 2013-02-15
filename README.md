@@ -11,6 +11,8 @@ Dependencies
 
 **WARNING:** If you need really strong passphrases roll your dice and don't use generated dice rolls.
 
+**WARNING:** If you enter your dice rolls as the parameter, it may remain in your shell history. Don't use this option when generating secret passphrases.
+
 Alternative word lists
 ----------------------
 You can use your own word lists in the following form: (rolls) (word)\n

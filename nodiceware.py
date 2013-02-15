@@ -16014,6 +16014,8 @@ class NoDiceware:
         print("You specified you dice roll, I'll use it instead of generating")
         self.generate = False
       self.wordlist = self.wordlist_normal
+      if(len(roll) <=0):
+        self.rawroll = input("Enter your dice rolls: ")
       
     if(len(filename) > 0):
       self.load_wordlist(filename)
@@ -16174,7 +16176,11 @@ def main(roll="", special=False, generate=False, num_words="0", filename=""):
   """Create Diceware passphrases easily, for more info visit 
   http://world.std.com/~reinhold/diceware.html
   
-  :param roll: your dice rolls, you can use spaces for better readability
+  If you don't specify you dice rolls as the parameters, you will be asked for 
+  them in the runtime
+  
+  :param roll: your dice rolls, you can use spaces for better readability 
+  WARNING: dice rolls may remain in your shell history
   :param special: insert special character into your passphrase (needs 4 more rolls)
   :param generate: generate random dice roll
   WARNING: generated passphrases are less secure than from dice rolls
